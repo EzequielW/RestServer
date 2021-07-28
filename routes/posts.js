@@ -3,14 +3,11 @@ const router = express.Router();
 const Post = require('../model/Post');
 const verify = require('./verifyToken');
 
-const commentsRoute = require('./comments')
-
-router.use('/:postId/comments', commentsRoute)
-
 router.get('/', async (req, res) => {
     try{
         const posts = await Post.find().populate('author_id');
         res.json(posts);
+        res.end();
     } catch (err){
         res.status(400).send(err);
     }
@@ -20,6 +17,7 @@ router.get('/:postId', async (req, res) => {
     try{
         const post = await Post.findById(req.params.postId);
         res.json(post);
+        res.end();
     } catch(err){
         res.status(400).send(err);
     }
@@ -36,27 +34,30 @@ router.post('/', verify,  async (req, res) =>{
     try{
         const savedPost = await post.save();
         res.json(savedPost);
+        res.end();
     } catch (err){
         res.status(400).send(err);
     }
 });
 
-router.delete('/:postId', async (req, res) => {
+router.delete('/:postId', verify, async (req, res) => {
     try{
         const removedPost = await Post.remove({ _id: req.params.postId });
         res.json(removedPost);
+        res.send();
     } catch(err){
         res.status(400).send(err);
     }
 })
 
-router.patch('/:postId', async (req, res) => {
+router.patch('/:postId', verify, async (req, res) => {
     try{
         const updatedPost = await Post.updateOne(
             { _id: req.params.postId }, 
             { $set: { title: req.body.title } }
         );
         res.json(updatedPost);
+        res.end();
     } catch(err){
         res.status(400).send(err);
     }

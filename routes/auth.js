@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
     const nameExists = await User.findOne({ name: req.body.name });
     if(nameExists) return res.status(400).send('Username already exists');
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     // User creation
@@ -28,6 +28,7 @@ router.post('/register', async (req, res) => {
     try{
         const savedUser = await user.save();
         res.json({ user: user._id });
+        res.end();
     } catch(err){
         res.status(400).send(err);
     }
@@ -41,12 +42,22 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if(!user) return res.status(400).send('Email or password wrong');
 
-    const validPass = await bcrypt.compare(req.body.password, user.password);
-    if(!validPass) return res.status(400).send('Email or password wrong');
-
-    // Generate token
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-    res.header('auth-token', token).send(token);
+    // Check if the passwords match else send message error
+    try{
+        bcrypt.compare(req.body.password, user.password, (err, isValid) => {
+            if(isValid){
+                // Generate token
+                const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+                res.send({"auth_token":token});
+            }
+            else{
+                res.status(400).send("Email or password incorrect");
+            }
+        });
+    }
+    catch(err){
+        res.status(500).send("Internal server error" + err);
+    } 
 });
 
 module.exports = router;
