@@ -19,10 +19,15 @@ app.use('/users', authRoute)
 app.use('/comments', commentsRoute)
 
 // Connection
-const dbConnection = mongoose.connect(process.env.DB_CONNECTION, 
-    {useNewUrlParser: true, useUnifiedTopology: true}, 
-    function() {
-        console.log('Connected to database')
-}).catch(err => console.log(err))
+try {
+    const dbConnection = mongoose.connect(process.env.DB_CONNECTION, 
+        {useNewUrlParser: true, useUnifiedTopology: true}, 
+        function() {
+            console.log('Connected to database')
+    })
+}
+catch(err){
+    console.log(err)
+}
 
 app.listen(3000);
