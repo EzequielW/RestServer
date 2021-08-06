@@ -24,6 +24,10 @@ const PostSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
+    imgPreview: {
+        type: String,
+        required: true
+    },
     comments: [commentSchema],
     date: {
         type: Date,

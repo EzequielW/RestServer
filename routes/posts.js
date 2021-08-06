@@ -2,6 +2,25 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../model/Post');
 const verify = require('./verifyToken');
+const multer = require('multer');
+const path = require('path');
+const crypto = require('crypto');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '../imageUpload/'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, (crypto.createHash('md5').update(file.originalname, 'utf8').digest("hex")).toString() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    }
+});
 
 router.get('/', async (req, res) => {
     try{
@@ -23,12 +42,13 @@ router.get('/:postId', async (req, res) => {
     }
 })
 
-router.post('/', verify,  async (req, res) =>{
+router.post('/', verify, upload.single('file'), async (req, res) =>{
     const post = new Post({
         title: req.body.title,
         intro: req.body.intro,
         content: req.body.content,
-        author_id: req.body.author_id
+        author_id: req.body.author_id,
+        imgPreview: req.file.filename
     });    
 
     try{

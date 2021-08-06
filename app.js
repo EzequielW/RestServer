@@ -14,6 +14,7 @@ const postsRoute = require('./routes/posts')
 const authRoute = require('./routes/auth')
 const commentsRoute = require('./routes/comments')
 
+app.use('/images', express.static(__dirname + '/imageUpload'))
 app.use('/posts', postsRoute)
 app.use('/users', authRoute)
 app.use('/comments', commentsRoute)
@@ -30,4 +31,4 @@ catch(err){
     console.log(err)
 }
 
-app.listen(3000);
+app.listen(3000)
