@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('@hapi/joi')
 
 
 const registerValidation = data => {
@@ -13,8 +13,8 @@ const registerValidation = data => {
         password: Joi.string()
             .min(6)
             .required()
-    });
-    return schema.validate(data);
+    })
+    return schema.validate(data)
 }
 
 const loginValidation = data => {
@@ -26,9 +26,9 @@ const loginValidation = data => {
         password: Joi.string()
             .min(6)
             .required()
-    });
-    return schema.validate(data);
+    })
+    return schema.validate(data)
 }
 
-module.exports.registerValidation = registerValidation;
-module.exports.loginValidation = loginValidation;
+module.exports.registerValidation = registerValidation
+module.exports.loginValidation = loginValidation

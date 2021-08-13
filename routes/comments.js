@@ -13,11 +13,11 @@ router.post('/', async (req, res) => {
         const updatedPost = await Post.updateOne(
             { _id: req.params.postId }, 
             { $push: { comments: comment } }
-        );
-        res.json(updatedPost);
-        res.end();
+        )
+        res.json(updatedPost)
+        res.end()
     } catch(err){
-        res.status(400).send(err);
+        res.status(400).send(err)
     }
 })
 

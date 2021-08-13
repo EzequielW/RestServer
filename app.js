@@ -1,11 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const app = express();
+const app = express()
 const cors = require('cors')
-require('dotenv/config')
+const {cloudinaryConfig, uploader} = require('./cloudinaryConfig')
+require('dotenv').config({path: __dirname + '/.env.local'})
 
 // Middlewares
-app.use(cors());
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
@@ -14,7 +15,7 @@ const postsRoute = require('./routes/posts')
 const authRoute = require('./routes/auth')
 const commentsRoute = require('./routes/comments')
 
-app.use('/images', express.static(__dirname + '/imageUpload'))
+app.use('*', cloudinaryConfig)
 app.use('/posts', postsRoute)
 app.use('/users', authRoute)
 app.use('/comments', commentsRoute)
