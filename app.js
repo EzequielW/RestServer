@@ -22,7 +22,7 @@ app.use('/comments', commentsRoute)
 
 // Connection
 try {
-    const dbConnection = mongoose.connect(process.env.DB_CONNECTION || process.env.MONGODB_URI, 
+    const dbConnection = mongoose.connect(process.env.MONGODB_URI, 
         {useNewUrlParser: true, useUnifiedTopology: true}, 
         function() {
             console.log('Connected to database')
