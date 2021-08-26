@@ -1,9 +1,10 @@
 const express = require('express')
+const verify = require('./verifyToken')
 const router = express.Router({ mergeParams: true })
 const Post = require('../model/Post')
 const Comment = require('../model/Comment')
 
-router.post('/', async (req, res) => {
+router.post('/', verify, async (req, res) => {
     const comment = new Comment({
         author: req.body.author,
         message: req.body.message

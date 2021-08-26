@@ -4,6 +4,9 @@ const Post = require('../model/Post')
 const verify = require('./verifyToken')
 const { multerUpload, dataURI } = require('../multerConfig')
 const { cloudinaryConfig, uploader } = require('../cloudinaryConfig')
+const commentsRouter = require('./comments')
+
+router.use('/:postId/comments', commentsRouter)
 
 router.get('/', async (req, res) => {
     try{
