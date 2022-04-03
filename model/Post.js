@@ -35,4 +35,26 @@ const PostSchema = mongoose.Schema({
     }
 })
 
+PostSchema.statics.paginate = async function(page, limit) {
+    try{
+        if(limit > 20){
+            limit = 20;
+        }
+        const skip =  limit * (page - 1);
+        const totalCount = await this.countDocuments();
+        const posts = await this.find().skip(skip).limit(limit).populate('author_id');
+        const pages = Math.ceil(totalCount / limit);
+
+        const result = {
+            'totalPages': pages,
+            'page': page,
+            'posts': posts
+        }
+        return result;
+    } catch(err){
+        console.error(err);
+        throw new Error(err);
+    }
+};
+
 module.exports = mongoose.model('Post', PostSchema)
