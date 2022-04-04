@@ -48,6 +48,7 @@ router.post('/', verify, multerUpload, async (req, res) =>{
                 res.json(savedPost)
                 res.end()
             } catch (err){
+                console.error(err);
                 res.status(400).send(err)
             }
         }).catch((err) => {

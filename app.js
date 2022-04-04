@@ -14,6 +14,9 @@ app.use(express.json())
 const postsRoute = require('./routes/posts')
 const authRoute = require('./routes/auth')
 const commentsRoute = require('./routes/comments')
+const morgan = require('morgan')
+
+app.use(morgan('combined'));
 
 app.use('*', cloudinaryConfig)
 app.use('/posts', postsRoute)
