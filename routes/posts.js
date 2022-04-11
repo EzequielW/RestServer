@@ -39,7 +39,7 @@ router.post('/', verify, multerUpload, async (req, res) =>{
                 title: req.body.title,
                 intro: req.body.intro,
                 content: req.body.content,
-                author_id: req.body.author_id,
+                author_id: req.user._id,
                 imgPreview: result.url
             })
 

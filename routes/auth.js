@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
         bcrypt.compare(req.body.password, user.password, (err, isValid) => {
             if(isValid){
                 // Generate token
-                const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
+                const token = jwt.sign({ _id: user._id, username: user.name }, process.env.TOKEN_SECRET)
                 res.send({"auth_token":token})
             }
             else{

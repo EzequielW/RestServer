@@ -6,7 +6,8 @@ const Comment = require('../model/Comment')
 
 router.post('/', verify, async (req, res) => {
     const comment = new Comment({
-        author: req.body.author,
+        author: req.user._id,
+        authorName: req.user.username,
         message: req.body.message
     })
 

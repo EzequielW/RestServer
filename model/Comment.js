@@ -6,6 +6,12 @@ const commentSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
+    authorName: {
+        type: String,
+        required: true,
+        min: 6,
+        max: 255
+    },
     message:{
         type: String,
         required: true,
